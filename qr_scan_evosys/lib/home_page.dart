@@ -20,8 +20,8 @@ class _HomePageState extends State<HomePage> {
     // Preferences.codcng = "MA31CR97PA";
     var url = Uri(
       scheme: 'https',
-      host: 'ugroo-scan.azurewebsites.net',
-      path: 'Obtener',
+      host: 'url web',
+      path: 'EVOSYS/cnDatas.php',
     );
     var response = await http.post(url).timeout(const Duration(seconds: 90));
 
@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> {
     data = [];
     var url = Uri(
       scheme: 'https',
-      host: 'urlApp',
-      path: 'Obtener',
+      host: 'url web',
+      path: 'EVOSYS/cnDatas.php',
     );
     var response = await http.post(url).timeout(const Duration(seconds: 90));
 
@@ -186,16 +186,24 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  var url1 = Uri.parse(
-                      'https://ugroo-scan.azurewebsites.net/Registro?Nombre=$nombre&telefono=$tel&email=$email&org=$organizacion&cadena=$data');
-                  var response1 = await http
-                      .post(url1)
-                      .timeout(const Duration(seconds: 90));
+                  var url = Uri(
+                    scheme: 'https',
+                    host: 'url web',
+                    path: 'EVOSYS/rgDatasScan.php',
+                  );
+                  var response = await http.post(url, body: {
+                    'NOM': nombre,
+                    'TEL': tel,
+                    'EML': email,
+                    'ORG': organizacion,
+                    'DTA': data
+                  }).timeout(const Duration(seconds: 90));
 
-                  print("respuesta ${response1.body}");
-                  Navigator.of(context).pop();
+                  if (response.body != '') {
+                    Navigator.of(context).pop();
 
-                  data = nitifications();
+                    data = nitifications();
+                  }
                 },
                 child: Text('Guardar')),
           ],
